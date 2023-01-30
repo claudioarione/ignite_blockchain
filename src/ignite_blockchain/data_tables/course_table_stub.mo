@@ -54,5 +54,5 @@ module {
 
   };
 
-  func equalityPredicate(x: UserId, y: UserId): Bool { x == y };
+  func equalityPredicate(x: CourseId, y: CourseId): Bool { x == y };
 };
