@@ -17,6 +17,11 @@ module {
         let secondsPlayed = checkpoint.minute * 60 + checkpoint.second;
         // Total amount of seconds of the course
         let totalSeconds = course.totalDuration.minute * 60 + course.totalDuration.second;
+        if(secondsPlayed > totalSeconds) {
+            // The user can't have watched a course for longer than its duration:
+            // the function has been called with wrong parameters
+            throw #err("Invalid checkpoint for user");
+        }
         // The total awrded gems will be given with respect to the percentage of the
         // seconds of the course which have been watched. The number will be rounded to
         // the closest integer
