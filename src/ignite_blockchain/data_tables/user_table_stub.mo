@@ -8,11 +8,11 @@ module {
   type Profile = Types.Profile;
   type UserId = Types.UserId;
 
-  public class UsersTable() {
+  actor class UsersTable() {
     // The "database" is just a local hash map
     let hashMap = HashMap.HashMap<UserId, Profile>(1, equalityPredicate, Principal.hash);
 
-    public func createOne(userId: UserId, profile: NewProfile) {
+    public func createOne(userId: UserId, profile: NewProfile) : async() {
       hashMap.put(userId, makeProfile(userId, profile));
     };
 

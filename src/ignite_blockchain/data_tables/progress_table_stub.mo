@@ -17,7 +17,7 @@ module {
         courseId: CourseId;
     };
 
-    public class ProgressTable() {
+    actor class ProgressTable() {
         // Again, the "database" is just a local hash map
         let hashMap = HashMap.HashMap<ProgressId, Progress>(1, equalityPredicate, Principal.hash);
 
@@ -54,7 +54,7 @@ module {
             let gems = progress.gemsEarned;
             if(isCorrect) {
                 gems += quiz.gems;
-            }
+            };
             var quizzes : [Quiz] = course.quizzesCompleted;
             quizzes := Array.append<Quiz>(quizzes, [quiz]);
             hashMap.put(progressId, {
@@ -73,14 +73,14 @@ module {
             };
             let oldProgress : ?Progress = hashMap.get(progressId);
             if(oldProgress == null) return;
-            if(newCkpt.minute < oldProgress.checkpoint.minute || 
-                (newCkpt.minute == oldProgress.checkpoint.minute && 
+            if(newCkpt.minute < oldProgress.checkpoint.minute or 
+                (newCkpt.minute == oldProgress.checkpoint.minute and
                 newCkpt.second < oldProgress.checkpoint.second)
             ) {
                 // The provided value of the checkpoint is not valid
                 // because it represents a time before the current one
                 throw #err("The provided checkpoint is before the saved one");
-            }
+            };
             let newGemsValue = GemCalculator.computeGemsForViews(course, newCkpt);
             hashMap.put(progressId, {
                 userId = uId;
@@ -89,7 +89,7 @@ module {
                 gemsEarned = newGemsValue;
                 quizzesCompleted = oldProgress.quizzesCompleted;
             });
-        }
+        };
 
     };
 

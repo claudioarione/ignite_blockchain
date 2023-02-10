@@ -8,7 +8,7 @@ module {
   type Course = Types.Course;
   type CourseId = Types.CourseId;
 
-  public class CoursesTable() {
+  actor class CoursesTable() {
     // Again, the "database" is just a local hash map
     let hashMap = HashMap.HashMap<CourseId, Course>(1, equalityPredicate, Principal.hash);
 
