@@ -1,12 +1,7 @@
 import Types "../types";
 import Nat "mo:base/Nat";
-import CourseTableStub "../data_tables/course_table_stub";
-import Types "../types";
-import Types "./types";
-import CourseTable "../data_tables/course_table_stub.mo"
 
 module {
-    type Progress = Types.Progress;
     type Course = Types.Course;
     type Duration = Types.Duration;
 
@@ -21,7 +16,7 @@ module {
             // The user can't have watched a course for longer than its duration:
             // the function has been called with wrong parameters
             throw #err("Invalid checkpoint for user");
-        }
+        };
         // The total awrded gems will be given with respect to the percentage of the
         // seconds of the course which have been watched. The number will be rounded to
         // the closest integer

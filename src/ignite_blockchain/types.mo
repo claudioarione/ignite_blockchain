@@ -44,7 +44,7 @@ module {
     checkpoint: Duration;
     gemsEarned: Nat;
     quizzesCompleted: [Quiz];
-  }
+  };
 
   public type Quiz = {
     id: QuizId;
@@ -52,6 +52,6 @@ module {
     answers: [Text];
     correctAnswer: Text;
     gems: Nat;
-  }
+  };
 
 };
