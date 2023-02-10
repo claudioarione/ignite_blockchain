@@ -5,7 +5,7 @@ module {
   public type CourseId = Principal;
   public type QuizId = Principal;
 
-  type Duration = {
+  public type Duration = {
     minute : Nat;
     second : Nat;
   };
