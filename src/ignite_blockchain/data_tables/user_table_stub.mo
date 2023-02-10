@@ -20,7 +20,7 @@ module {
       hashMap.put(userId, profile);
     };
 
-    public func findOne(userId: UserId): ?Profile {
+    public func findOne(userId: UserId): async ?Profile {
       hashMap.get(userId);
     };
 
@@ -32,9 +32,7 @@ module {
         id = userId;
         firstName = profile.firstName;
         lastName = profile.lastName;
-        title = profile.title;
-        company = profile.company;
-        experience = profile.experience;
+        age = profile.age;
         education = profile.education;
         imgUrl = profile.imgUrl;
       }

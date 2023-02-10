@@ -11,6 +11,8 @@ module {
     type UserId = Types.UserId;
     type CourseId = Types.CourseId;
     type Course = Types.Course;
+    type Duration = Types.Duration;
+    type Quiz = Types.Quiz;
 
     public type ProgressId = {
         userId: UserId;
@@ -21,12 +23,12 @@ module {
         // Again, the "database" is just a local hash map
         let hashMap = HashMap.HashMap<ProgressId, Progress>(1, equalityPredicate, Principal.hash);
 
-        public func insertFirstProgress(cId: CourseId, uId: UserId, ckpt: Duration) {
+        public func insertFirstProgress(course: Course, uId: UserId, ckpt: Duration) {
             let progressId = {
                 userId = uId;
-                courseId = cId;
+                courseId = course.id;
             };
-            let gems = computeGemsForViews(cId);
+            let gems = GemCalculator.computeGemsForViews(course, ckpt);
             hashMap.put(progressId, {
                 userId = uId;
                 courseId = cId;
@@ -36,7 +38,7 @@ module {
             });
         };
 
-        public func findById(cId: CourseId, uId: UserId): ?Progress {
+        public func findById(cId: CourseId, uId: UserId): async ?Progress {
             let progressId = {
                 userId = uId;
                 courseId = cId;
@@ -50,31 +52,35 @@ module {
                 courseId = cId;
             };
             let progress : ?Progress = hashMap.get(progressId);
-            if(progress == null) return;
-            let gems = progress.gemsEarned;
-            if(isCorrect) {
-                gems += quiz.gems;
+            if(progress != null) {
+               return;
             };
-            var quizzes : [Quiz] = course.quizzesCompleted;
-            quizzes := Array.append<Quiz>(quizzes, [quiz]);
-            hashMap.put(progressId, {
-                userId = uId;
-                courseId = cId;
-                checkpoint = progress.checkpoint;
-                gemsEarned = gems;
-                quizzesCompleted = quizzes;
-            });
+            ignore do ? {
+              var gems : Nat = (progress!).gemsEarned;
+              if(isCorrect) {
+                  gems += quiz.gems;
+              };
+              var quizzes : [Quiz] = progress!.quizzesCompleted;
+              quizzes := Array.append<Quiz>(quizzes, [quiz]);
+              hashMap.put(progressId, {
+                  userId = uId;
+                  courseId = cId;
+                  checkpoint = progress!.checkpoint;
+                  gemsEarned = gems;
+                  quizzesCompleted = quizzes;
+              });
+            }
         };
 
         public func setNewCheckpoint(uId: UserId, course: Course, newCkpt: Duration) {
             let progressId = {
                 userId = uId;
-                courseId = course.courseId;
+                courseId = course.id;
             };
             let oldProgress : ?Progress = hashMap.get(progressId);
             if(oldProgress == null) return;
             if(newCkpt.minute < oldProgress.checkpoint.minute or 
-                (newCkpt.minute == oldProgress.checkpoint.minute and
+                (newCkpt.minute == oldProgress.checkpoint.minute and 
                 newCkpt.second < oldProgress.checkpoint.second)
             ) {
                 // The provided value of the checkpoint is not valid

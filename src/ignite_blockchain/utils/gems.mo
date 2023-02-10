@@ -15,13 +15,13 @@ module {
         if(secondsPlayed > totalSeconds) {
             // The user can't have watched a course for longer than its duration:
             // the function has been called with wrong parameters
-            throw #err("Invalid checkpoint for user");
+            return 0;
         };
         // The total awrded gems will be given with respect to the percentage of the
         // seconds of the course which have been watched. The number will be rounded to
         // the closest integer
         let percentageOfCompletion : Nat = (secondsPlayed / totalSeconds);
         return awardableGems * percentageOfCompletion;
-    }
+    };
 
 };

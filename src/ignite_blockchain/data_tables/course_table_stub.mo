@@ -7,6 +7,7 @@ import Nat "mo:base/Nat";
 module {
   type Course = Types.Course;
   type CourseId = Types.CourseId;
+  type Quiz = Types.Quiz;
 
   actor class CoursesTable() {
     // Again, the "database" is just a local hash map
@@ -16,40 +17,42 @@ module {
       hashMap.put(courseId, course);
     };
 
-    public func findById(courseId: CourseId): ?Course {
+    public func findById(courseId: CourseId): async ?Course {
       hashMap.get(courseId);
     };
 
     public func updateTotalGems(id: CourseId, gems: Nat) {
         let course : ?Course = hashMap.get(id);
-        if(course == null) return;
-        hashMap.put(id, {
-            courseId = id;
-            progressiveNumber = course.progressiveNumber;
-            title: course.title;
-            description: course.description;
-            videoUrl : course.videoUrl;
-            totalDuration: course.totalDuration;
-            totalGems: course.totalGems;
-            finalQuizzes: course.finalQuizzes;
-        });
-    }
+        ignore do ? {
+          hashMap.put(id, {
+            id = id;
+            progressiveNumber = course!.progressiveNumber;
+            title = course!.title;
+            description = course!.description;
+            videoUrl = course!.videoUrl;
+            totalDuration = course!.totalDuration;
+            totalGems = course!.totalGems;
+            finalQuizzes = course!.finalQuizzes;
+          });
+        };
+    };
 
     public func addQuiz(id : CourseId, quiz: Quiz) {
         let course : ?Course = hashMap.get(id);
-        if(course == null) return;
-        var quizzes : [Quiz] = course.finalQuizzes;
-        quizzes := Array.append<Quiz>(quizzes, [quiz]);
-        hashMap.put(id, {
-            courseId = id;
-            progressiveNumber = course.progressiveNumber;
-            title: course.title;
-            description: course.description;
-            videoUrl : course.videoUrl;
-            totalDuration: course.totalDuration;
-            totalGems: course.totalGems;
-            finalQuizzes: quizzes;
-        });
+        ignore do ? {
+          var quizzes : [Quiz] = course!.finalQuizzes;
+          quizzes := Array.append<Quiz>(quizzes, [quiz]);
+          hashMap.put(id, {
+              id = id;
+              progressiveNumber = course!.progressiveNumber;
+              title = course!.title;
+              description = course!.description;
+              videoUrl = course!.videoUrl;
+              totalDuration = course!.totalDuration;
+              totalGems = course!.totalGems;
+              finalQuizzes = quizzes;
+          });
+        };
     };
 
   };
