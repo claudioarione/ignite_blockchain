@@ -78,23 +78,24 @@ module {
                 courseId = course.id;
             };
             let oldProgress : ?Progress = hashMap.get(progressId);
-            if(oldProgress == null) return;
-            if(newCkpt.minute < oldProgress.checkpoint.minute or 
-                (newCkpt.minute == oldProgress.checkpoint.minute and 
-                newCkpt.second < oldProgress.checkpoint.second)
-            ) {
-                // The provided value of the checkpoint is not valid
-                // because it represents a time before the current one
-                throw #err("The provided checkpoint is before the saved one");
+            ignore do ? {
+              if(newCkpt.minute < oldProgress!.checkpoint.minute or 
+                (newCkpt.minute == oldProgress!.checkpoint.minute and 
+                newCkpt.second < oldProgress!.checkpoint.second)
+              ) {
+                  // The provided value of the checkpoint is not valid
+                  // because it represents a time before the current one
+                  return;
+              };
+              let newGemsValue = GemCalculator.computeGemsForViews(course, newCkpt);
+              hashMap.put(progressId, {
+                  userId = uId;
+                  courseId = course.id;
+                  checkpoint = newCkpt;
+                  gemsEarned = newGemsValue;
+                  quizzesCompleted = oldProgress!.quizzesCompleted;
+              });
             };
-            let newGemsValue = GemCalculator.computeGemsForViews(course, newCkpt);
-            hashMap.put(progressId, {
-                userId = uId;
-                courseId = course.courseId;
-                checkpoint = newCkpt;
-                gemsEarned = newGemsValue;
-                quizzesCompleted = oldProgress.quizzesCompleted;
-            });
         };
 
     };
