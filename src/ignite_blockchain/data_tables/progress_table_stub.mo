@@ -4,7 +4,7 @@ import Principal "mo:base/Principal";
 import Types "./types";
 import Nat "mo:base/Nat";
 import Bool "mo:base/Bool";
-import GemCalculator "../utils/gems.mo";
+import GemCalculator "../utils/gems";
 
 module {
     type Progress = Types.Progress;
