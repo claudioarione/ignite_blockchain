@@ -31,7 +31,7 @@ module {
             let gems = GemCalculator.computeGemsForViews(course, ckpt);
             hashMap.put(progressId, {
                 userId = uId;
-                courseId = cId;
+                courseId = course.id;
                 checkpoint = ckpt;
                 gemsEarned = gems;
                 quizzesCompleted = [];
