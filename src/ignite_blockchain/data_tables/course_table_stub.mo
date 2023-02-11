@@ -13,7 +13,7 @@ module {
     // Again, the "database" is just a local hash map
     let hashMap = HashMap.HashMap<CourseId, Course>(1, equalityPredicate, Principal.hash);
 
-    public func createOne(courseId: CourseId, course: Course) {
+    public func createOne(courseId: CourseId, course: Course) : async() {
       hashMap.put(courseId, course);
     };
 
@@ -21,7 +21,7 @@ module {
       hashMap.get(courseId);
     };
 
-    public func updateTotalGems(id: CourseId, gems: Nat) {
+    public func updateTotalGems(id: CourseId, gems: Nat) : async() {
         let course : ?Course = hashMap.get(id);
         ignore do ? {
           hashMap.put(id, {
@@ -37,7 +37,7 @@ module {
         };
     };
 
-    public func addQuiz(id : CourseId, quiz: Quiz) {
+    public func addQuiz(id : CourseId, quiz: Quiz) : async() {
         let course : ?Course = hashMap.get(id);
         ignore do ? {
           var quizzes : [Quiz] = course!.finalQuizzes;

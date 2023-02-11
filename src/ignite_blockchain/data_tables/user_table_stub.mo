@@ -16,7 +16,7 @@ module {
       hashMap.put(userId, makeProfile(userId, profile));
     };
 
-    public func updateOne(userId: UserId, profile: Profile) {
+    public func updateOne(userId: UserId, profile: Profile) : async() {
       hashMap.put(userId, profile);
     };
 

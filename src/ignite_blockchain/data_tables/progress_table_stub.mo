@@ -23,7 +23,7 @@ module {
         // Again, the "database" is just a local hash map
         let hashMap = HashMap.HashMap<ProgressId, Progress>(1, equalityPredicate, Principal.hash);
 
-        public func insertFirstProgress(course: Course, uId: UserId, ckpt: Duration) {
+        public func insertFirstProgress(course: Course, uId: UserId, ckpt: Duration) : async() {
             let progressId = {
                 userId = uId;
                 courseId = course.id;
@@ -46,7 +46,7 @@ module {
             hashMap.get(progressId);
         };
 
-        public func onQuizCompleted(cId: CourseId, uId: UserId, quiz: Quiz, isCorrect: Bool) {
+        public func onQuizCompleted(cId: CourseId, uId: UserId, quiz: Quiz, isCorrect: Bool) : async() {
             let progressId = {
                 userId = uId;
                 courseId = cId;
@@ -72,7 +72,7 @@ module {
             }
         };
 
-        public func setNewCheckpoint(uId: UserId, course: Course, newCkpt: Duration) {
+        public func setNewCheckpoint(uId: UserId, course: Course, newCkpt: Duration) : async() {
             let progressId = {
                 userId = uId;
                 courseId = course.id;
