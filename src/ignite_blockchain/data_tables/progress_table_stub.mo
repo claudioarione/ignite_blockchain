@@ -5,6 +5,8 @@ import Types "./types";
 import Nat "mo:base/Nat";
 import Bool "mo:base/Bool";
 import GemCalculator "../utils/gems";
+import Hash "mo:base/Hash";
+import Text "mo:base/Text";
 
 module {
     type Progress = Types.Progress;
@@ -21,7 +23,7 @@ module {
 
     actor class ProgressTable() {
         // Again, the "database" is just a local hash map
-        let hashMap = HashMap.HashMap<ProgressId, Progress>(1, equalityPredicate, Principal.hash);
+        let hashMap = HashMap.HashMap<ProgressId, Progress>(1, equalityPredicate, createHash);
 
         public func insertFirstProgress(course: Course, uId: UserId, ckpt: Duration) : async() {
             let progressId = {
@@ -102,5 +104,11 @@ module {
 
     func equalityPredicate(x: ProgressId, y: ProgressId): Bool { 
         x.userId == y.userId and x.courseId == y.courseId
+    };
+
+    func createHash(progressId: ProgressId) : Hash.Hash {
+        let progressText : Text = Principal.toText(progressId.userId) # Principal.toText(progressId.courseId);
+        let principal : Principal = Principal.fromText(progressText);
+        return Principal.hash(principal);
     };
 };
