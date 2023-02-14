@@ -21,7 +21,7 @@ module {
         courseId: CourseId;
     };
 
-    actor class ProgressTable() {
+    public class ProgressTable() {
         // Again, the "database" is just a local hash map
         let hashMap = HashMap.HashMap<ProgressId, Progress>(1, equalityPredicate, createHash);
 
