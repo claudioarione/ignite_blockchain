@@ -1,4 +1,4 @@
-# ignite_blockchain
+# Ignite Blockchain
 ### The project in short
 This smart contract is a sample MVP for the project work presented for the fourth edition of MasterZ Blockchain program.    
 The Project Work chosen has the objective of creating a web3 platform where users will find training materials regarding the blockchain. Users will receive rewards based on time spent on the platform, watched videos, read articles and correctly performed quizzes. The rewards can be used to unlock subsequent modules and other premium content, donated to charity organizations or withdrawn.    
